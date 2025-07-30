@@ -132,7 +132,7 @@ export default function Home() {
       {/* Emotions Section */}
       <motion.div 
         ref={emotionsSectionRef}
-        className="min-h-screen relative bg-gradient-to-r from-blue-50 to-indigo-50 flex items-center overflow-hidden scroll-mt-16"
+        className="min-h-screen relative bg-gradient-to-r from-blue-50 to-indigo-50 flex items-center overflow-hidden scroll-mt-8"
         variants={fadeInUp}
         initial="hidden"
         animate={emotionsInView ? "visible" : "hidden"}
@@ -182,7 +182,7 @@ export default function Home() {
       {/* Logic Section */}
       <motion.div 
         ref={logicSectionRef}
-        className="min-h-screen relative bg-white flex items-center overflow-hidden scroll-mt-16"
+        className="min-h-screen relative bg-white flex items-center overflow-hidden scroll-mt-8"
         variants={fadeInUp}
         initial="hidden"
         animate={logicInView ? "visible" : "hidden"}
@@ -252,7 +252,7 @@ export default function Home() {
       {/* Offer Section */}
       <motion.div 
         ref={offerSectionRef}
-        className="min-h-screen relative bg-gradient-to-r from-blue-50 to-indigo-50 flex items-center overflow-hidden scroll-mt-16 pb-28 md:pb-16"
+        className="min-h-screen relative bg-gradient-to-r from-blue-50 to-indigo-50 flex items-center md:items-center items-start overflow-hidden scroll-mt-8 pb-28 md:pb-16 pt-20 md:pt-0"
         variants={fadeInUp}
         initial="hidden"
         animate={offerInView ? "visible" : "hidden"}
@@ -320,7 +320,7 @@ export default function Home() {
       {/* Form Section */}
       <motion.div 
         ref={formSectionRef}
-        className="min-h-screen relative flex items-center justify-center px-4 py-16 sm:px-6 lg:px-8 scroll-mt-20"
+        className="min-h-screen relative flex items-start md:items-center justify-center px-4 py-16 sm:px-6 lg:px-8 scroll-mt-12 pt-36 md:pt-0"
         variants={fadeInUp}
         initial="hidden"
         animate={formInView ? "visible" : "hidden"}

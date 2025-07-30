@@ -11,9 +11,16 @@ interface ScrollArrowProps {
 export default function ScrollArrow({ targetRef, className = '' }: ScrollArrowProps) {
   const scrollToNext = () => {
     if (targetRef.current) {
-      targetRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
+      const elementTop = targetRef.current.offsetTop
+      const elementHeight = targetRef.current.offsetHeight
+      const windowHeight = window.innerHeight
+      
+      // Przewiń do pozycji, która centruje element
+      const scrollPosition = elementTop - (windowHeight - elementHeight) / 2
+      
+      window.scrollTo({
+        top: Math.max(0, scrollPosition),
+        behavior: 'smooth'
       })
     }
   }

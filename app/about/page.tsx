@@ -23,7 +23,7 @@ export default function About() {
               </span>
             </h1>
 
-            <div ref={aboutSectionRef} className="mt-16 flex flex-col lg:flex-row items-center gap-12 scroll-mt-16">
+            <div ref={aboutSectionRef} className="mt-16 flex flex-col lg:flex-row items-center gap-12 scroll-mt-8">
               <div className="lg:w-1/3">
                 <img
                   src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3"
@@ -63,7 +63,7 @@ export default function About() {
               </div>
             </div>
 
-            <div ref={benefitsSectionRef} className="mt-16 scroll-mt-16">
+            <div ref={benefitsSectionRef} className="mt-16 scroll-mt-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-6">Co zyskujesz na współpracy ze mną?</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="bg-white p-6 rounded-lg shadow-lg">
