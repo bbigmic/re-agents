@@ -98,10 +98,10 @@ export default function Home() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
             >
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
                 Znajdę dla Ciebie Idealny Dom
               </h1>
-              <p className="mt-3 text-base sm:text-lg md:mt-5 md:text-xl">
+              <p className="mt-3 text-sm sm:text-base md:mt-5 md:text-xl">
                 Oszczędź czas i stres - zajmę się wszystkimi formalnościami, negocjacjami i dokumentami, 
                 abyś mógł skupić się na tym, co najważniejsze - swojej przyszłości w wymarzonym domu.
               </p>
@@ -114,7 +114,7 @@ export default function Home() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.7 }}
             >
-              <div className="relative w-64 h-64 md:w-96 md:h-96">
+              <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96">
                 <img
                   src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                   alt="Agent nieruchomości"
@@ -151,10 +151,10 @@ export default function Home() {
               animate={emotionsInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <HeartIcon className="h-12 w-12 text-white mx-auto mb-4" />
+              <HeartIcon className="h-8 w-8 sm:h-12 sm:w-12 text-white mx-auto mb-4" />
             </motion.div>
             <motion.h2 
-              className="text-3xl font-bold mb-4"
+              className="text-2xl sm:text-3xl font-bold mb-4"
               initial={{ opacity: 0, y: 20 }}
               animate={emotionsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -162,7 +162,7 @@ export default function Home() {
               Bezpieczna Przyszłość w Wymarzonym Domu
             </motion.h2>
             <motion.p 
-              className="text-lg max-w-2xl mx-auto"
+              className="text-base sm:text-lg max-w-2xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={emotionsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.4 }}
@@ -201,10 +201,10 @@ export default function Home() {
               animate={logicInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <ChartBarIcon className="h-12 w-12 text-white mx-auto mb-4" />
+              <ChartBarIcon className="h-8 w-8 sm:h-12 sm:w-12 text-white mx-auto mb-4" />
             </motion.div>
             <motion.h2 
-              className="text-3xl font-bold mb-4"
+              className="text-2xl sm:text-3xl font-bold mb-4"
               initial={{ opacity: 0, y: 20 }}
               animate={logicInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -212,33 +212,33 @@ export default function Home() {
               Podejmuj Mądre Decyzje Inwestycyjne
             </motion.h2>
             <motion.div 
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10"
+              className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mt-8 sm:mt-10"
               variants={staggerChildren}
               initial="hidden"
               animate={logicInView ? "visible" : "hidden"}
             >
               <motion.div 
-                className="p-6 bg-black/50 backdrop-blur-sm rounded-lg"
+                className="p-4 sm:p-6 bg-black/50 backdrop-blur-sm rounded-lg"
                 variants={fadeInUp}
               >
-                <h3 className="text-xl font-semibold mb-2">Zyskowna Wycena</h3>
-                <p>Otrzymasz szczegółową analizę wartości nieruchomości, która pomoże Ci 
+                <h3 className="text-lg sm:text-xl font-semibold mb-2">Zyskowna Wycena</h3>
+                <p className="text-sm sm:text-base">Otrzymasz szczegółową analizę wartości nieruchomości, która pomoże Ci 
                    podjąć najkorzystniejszą decyzję finansową</p>
               </motion.div>
               <motion.div 
-                className="p-6 bg-black/50 backdrop-blur-sm rounded-lg"
+                className="p-4 sm:p-6 bg-black/50 backdrop-blur-sm rounded-lg"
                 variants={fadeInUp}
               >
-                <h3 className="text-xl font-semibold mb-2">Pewna Inwestycja</h3>
-                <p>Poznasz aktualne trendy rynkowe i prognozy, które zabezpieczą 
+                <h3 className="text-lg sm:text-xl font-semibold mb-2">Pewna Inwestycja</h3>
+                <p className="text-sm sm:text-base">Poznasz aktualne trendy rynkowe i prognozy, które zabezpieczą 
                    Twoją inwestycję na przyszłość</p>
               </motion.div>
               <motion.div 
-                className="p-6 bg-black/50 backdrop-blur-sm rounded-lg"
+                className="p-4 sm:p-6 bg-black/50 backdrop-blur-sm rounded-lg"
                 variants={fadeInUp}
               >
-                <h3 className="text-xl font-semibold mb-2">Najlepszy Moment</h3>
-                <p>Dowiesz się, kiedy kupić lub sprzedać, aby zmaksymalizować 
+                <h3 className="text-lg sm:text-xl font-semibold mb-2">Najlepszy Moment</h3>
+                <p className="text-sm sm:text-base">Dowiesz się, kiedy kupić lub sprzedać, aby zmaksymalizować 
                    swój zysk i bezpieczeństwo transakcji</p>
               </motion.div>
             </motion.div>
@@ -265,10 +265,10 @@ export default function Home() {
               animate={offerInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <SparklesIcon className="h-12 w-12 text-white mx-auto mb-4" />
+              <SparklesIcon className="h-8 w-8 sm:h-12 sm:w-12 text-white mx-auto mb-4" />
             </motion.div>
             <motion.h2 
-              className="text-3xl font-bold mb-4"
+              className="text-2xl sm:text-3xl font-bold mb-4"
               initial={{ opacity: 0, y: 20 }}
               animate={offerInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -276,38 +276,38 @@ export default function Home() {
               Kompleksowa Pomoc w Każdej Transakcji
             </motion.h2>
             <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-10"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mt-8 sm:mt-10"
               variants={staggerChildren}
               initial="hidden"
               animate={offerInView ? "visible" : "hidden"}
             >
               <motion.div 
-                className="p-6 bg-black/50 backdrop-blur-sm rounded-lg"
+                className="p-4 sm:p-6 bg-black/50 backdrop-blur-sm rounded-lg"
                 variants={fadeInUp}
               >
-                <h3 className="text-xl font-semibold mb-2">Sprzedaż</h3>
-                <p>Uzyskaj najlepszą cenę za swoją nieruchomość dzięki profesjonalnej prezentacji i skutecznym negocjacjom</p>
+                <h3 className="text-lg sm:text-xl font-semibold mb-2">Sprzedaż</h3>
+                <p className="text-sm sm:text-base">Uzyskaj najlepszą cenę za swoją nieruchomość dzięki profesjonalnej prezentacji i skutecznym negocjacjom</p>
               </motion.div>
               <motion.div 
-                className="p-6 bg-black/50 backdrop-blur-sm rounded-lg"
+                className="p-4 sm:p-6 bg-black/50 backdrop-blur-sm rounded-lg"
                 variants={fadeInUp}
               >
-                <h3 className="text-xl font-semibold mb-2">Zakup</h3>
-                <p>Znajdź idealną nieruchomość w najlepszej cenie, bez stresu i ukrytych kosztów</p>
+                <h3 className="text-lg sm:text-xl font-semibold mb-2">Zakup</h3>
+                <p className="text-sm sm:text-base">Znajdź idealną nieruchomość w najlepszej cenie, bez stresu i ukrytych kosztów</p>
               </motion.div>
               <motion.div 
-                className="p-6 bg-black/50 backdrop-blur-sm rounded-lg"
+                className="p-4 sm:p-6 bg-black/50 backdrop-blur-sm rounded-lg"
                 variants={fadeInUp}
               >
-                <h3 className="text-xl font-semibold mb-2">Wynajem</h3>
-                <p>Zyskaj pewnego najemcę lub znajdź idealne mieszkanie na wynajem z pełnym bezpieczeństwem prawnym</p>
+                <h3 className="text-lg sm:text-xl font-semibold mb-2">Wynajem</h3>
+                <p className="text-sm sm:text-base">Zyskaj pewnego najemcę lub znajdź idealne mieszkanie na wynajem z pełnym bezpieczeństwem prawnym</p>
               </motion.div>
               <motion.div 
-                className="p-6 bg-black/50 backdrop-blur-sm rounded-lg"
+                className="p-4 sm:p-6 bg-black/50 backdrop-blur-sm rounded-lg"
                 variants={fadeInUp}
               >
-                <h3 className="text-xl font-semibold mb-2">Doradztwo</h3>
-                <p>Podejmuj świadome decyzje inwestycyjne dzięki eksperckiej wiedzy o rynku nieruchomości</p>
+                <h3 className="text-lg sm:text-xl font-semibold mb-2">Doradztwo</h3>
+                <p className="text-sm sm:text-base">Podejmuj świadome decyzje inwestycyjne dzięki eksperckiej wiedzy o rynku nieruchomości</p>
               </motion.div>
             </motion.div>
           </div>
@@ -334,7 +334,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/60" />
         <motion.form 
           onSubmit={handleSubmit} 
-          className="relative w-full max-w-2xl space-y-8 divide-y divide-gray-200 bg-white/90 backdrop-blur-sm shadow-lg rounded-lg p-8"
+          className="relative w-full max-w-2xl space-y-8 divide-y divide-gray-200 bg-white/90 backdrop-blur-sm shadow-lg rounded-lg p-6 sm:p-8"
           initial={{ opacity: 0, y: 50 }}
           animate={formInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.8 }}
@@ -345,8 +345,8 @@ export default function Home() {
               animate={formInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <h3 className="text-lg leading-6 font-medium text-gray-900">Umów Bezpłatną Konsultację</h3>
-              <p className="mt-1 text-sm text-gray-500">Pierwszy krok do Twojej wymarzonej nieruchomości</p>
+              <h3 className="text-base sm:text-lg leading-6 font-medium text-gray-900">Umów Bezpłatną Konsultację</h3>
+              <p className="mt-1 text-xs sm:text-sm text-gray-500">Pierwszy krok do Twojej wymarzonej nieruchomości</p>
             </motion.div>
 
             <motion.div 
@@ -367,7 +367,7 @@ export default function Home() {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    className="pl-10 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
+                    className="pl-10 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md touch-target"
                     placeholder="Imię i nazwisko"
                   />
                 </div>
@@ -385,7 +385,7 @@ export default function Home() {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="pl-10 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
+                    className="pl-10 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md touch-target"
                     placeholder="Adres email"
                   />
                 </div>
@@ -403,7 +403,7 @@ export default function Home() {
                     required
                     value={formData.phone}
                     onChange={handleChange}
-                    className="pl-10 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
+                    className="pl-10 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md touch-target"
                     placeholder="Numer telefonu"
                   />
                 </div>
@@ -417,8 +417,8 @@ export default function Home() {
               animate={formInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <h3 className="text-lg leading-6 font-medium text-gray-900">Szczegóły spotkania</h3>
-              <p className="mt-1 text-sm text-gray-500">Wybierz preferowany termin spotkania.</p>
+              <h3 className="text-base sm:text-lg leading-6 font-medium text-gray-900">Szczegóły spotkania</h3>
+              <p className="mt-1 text-xs sm:text-sm text-gray-500">Wybierz preferowany termin spotkania.</p>
             </motion.div>
 
             <motion.div 
@@ -440,7 +440,7 @@ export default function Home() {
                     value={formData.date}
                     onChange={handleChange}
                     min={format(new Date(), 'yyyy-MM-dd')}
-                    className="pl-10 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
+                    className="pl-10 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md touch-target"
                   />
                 </div>
               </motion.div>
@@ -457,7 +457,7 @@ export default function Home() {
                     required
                     value={formData.time}
                     onChange={handleChange}
-                    className="pl-10 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
+                    className="pl-10 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md touch-target"
                   />
                 </div>
               </motion.div>
@@ -473,7 +473,7 @@ export default function Home() {
                     required
                     value={formData.propertyType}
                     onChange={handleChange}
-                    className="pl-10 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
+                    className="pl-10 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md touch-target"
                   >
                     <option value="mieszkanie">Mieszkanie</option>
                     <option value="dom">Dom</option>
@@ -494,7 +494,7 @@ export default function Home() {
                     required
                     value={formData.transactionType}
                     onChange={handleChange}
-                    className="pl-10 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
+                    className="pl-10 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md touch-target"
                   >
                     <option value="kupić">Chcę kupić</option>
                     <option value="sprzedać">Chcę sprzedać</option>
@@ -509,7 +509,7 @@ export default function Home() {
                   rows={4}
                   value={formData.message}
                   onChange={handleChange}
-                  className="block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
+                  className="block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md touch-target"
                   placeholder="Dodatkowe uwagi lub pytania..."
                 />
               </motion.div>
@@ -525,7 +525,7 @@ export default function Home() {
             <div className="flex justify-end">
               <motion.button
                 type="submit"
-                className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 touch-target"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

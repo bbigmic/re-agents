@@ -18,8 +18,8 @@ export default function Navbar() {
           <div className="flex">
             <Link href="/" className="flex items-center">
               <div className="flex items-center">
-                <HomeIcon className="h-8 w-8 text-blue-600" />
-                <span className="ml-2 text-xl font-bold text-gray-900">
+                <HomeIcon className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+                <span className="ml-2 text-lg sm:text-xl font-bold text-gray-900">
                   RE Agents
                 </span>
               </div>
@@ -57,7 +57,7 @@ export default function Navbar() {
             <div className="sm:hidden ml-4">
               <Link
                 href="/panel"
-                className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 touch-target"
               >
                 Panel agenta
               </Link>
@@ -67,7 +67,7 @@ export default function Navbar() {
             <div className="sm:hidden ml-2">
               <button
                 onClick={toggleMenu}
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 touch-target"
                 aria-expanded="false"
               >
                 <span className="sr-only">Otwórz menu główne</span>
@@ -87,14 +87,14 @@ export default function Navbar() {
             <div className="pt-2 pb-3 space-y-1">
               <Link 
                 href="/about"
-                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md"
+                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md touch-target"
                 onClick={() => setIsMenuOpen(false)}
               >
                 O mnie
               </Link>
               <Link 
                 href="/contact"
-                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md"
+                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md touch-target"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Kontakt

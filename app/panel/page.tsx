@@ -16,7 +16,8 @@ import {
   CalendarIcon,
   CurrencyDollarIcon,
   CheckCircleIcon,
-  ClockIcon
+  ClockIcon,
+  Bars3Icon
 } from '@heroicons/react/24/outline'
 
 interface Client {
@@ -51,6 +52,7 @@ interface Meeting {
 
 export default function AgentPanel() {
   const [activeTab, setActiveTab] = useState('dashboard')
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [clients] = useState<Client[]>([
     {
       id: 1,
@@ -155,36 +157,76 @@ export default function AgentPanel() {
     <div className="min-h-screen bg-gray-50 pt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="bg-white shadow rounded-lg p-6 mb-6">
-          <div className="flex items-center justify-between">
+        <div className="bg-white shadow rounded-lg p-4 sm:p-6 mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Panel Agenta</h1>
-              <p className="text-gray-600">Witaj w panelu zarządzania</p>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Panel Agenta</h1>
+              <p className="text-gray-600 text-sm sm:text-base">Witaj w panelu zarządzania</p>
             </div>
-            <div className="flex space-x-3">
-              <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+              <button className="inline-flex items-center justify-center px-3 sm:px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
                 <PlusIcon className="h-4 w-4 mr-2" />
-                Dodaj klienta
+                <span className="hidden sm:inline">Dodaj klienta</span>
+                <span className="sm:hidden">Klient</span>
               </button>
-              <button className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+              <button className="inline-flex items-center justify-center px-3 sm:px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
                 <PlusIcon className="h-4 w-4 mr-2" />
-                Dodaj nieruchomość
+                <span className="hidden sm:inline">Dodaj nieruchomość</span>
+                <span className="sm:hidden">Nieruchomość</span>
               </button>
             </div>
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="bg-white shadow rounded-lg mb-6">
+        {/* Mobile Tab Selector */}
+        <div className="sm:hidden bg-white shadow rounded-lg mb-6">
+          <div className="p-4">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="w-full flex items-center justify-between px-4 py-2 border border-gray-300 rounded-md bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >
+              <span>{tabs.find(tab => tab.id === activeTab)?.name}</span>
+              <Bars3Icon className="h-5 w-5" />
+            </button>
+            
+            {isMobileMenuOpen && (
+              <div className="mt-2 border border-gray-200 rounded-md bg-white">
+                {tabs.map((tab) => {
+                  const Icon = tab.icon
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => {
+                        setActiveTab(tab.id)
+                        setIsMobileMenuOpen(false)
+                      }}
+                      className={`w-full flex items-center px-4 py-2 text-sm ${
+                        activeTab === tab.id
+                          ? 'bg-blue-50 text-blue-700'
+                          : 'text-gray-700 hover:bg-gray-50'
+                      }`}
+                    >
+                      <Icon className="h-5 w-5 mr-3" />
+                      {tab.name}
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Desktop Tabs */}
+        <div className="hidden sm:block bg-white shadow rounded-lg mb-6">
           <div className="border-b border-gray-200">
-            <nav className="-mb-px flex space-x-8 px-6" aria-label="Tabs">
+            <nav className="-mb-px flex space-x-8 px-6 overflow-x-auto" aria-label="Tabs">
               {tabs.map((tab) => {
                 const Icon = tab.icon
                 return (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center ${
+                    className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center whitespace-nowrap ${
                       activeTab === tab.id
                         ? 'border-blue-500 text-blue-600'
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -200,49 +242,49 @@ export default function AgentPanel() {
         </div>
 
         {/* Tab Content */}
-        <div className="bg-white shadow rounded-lg p-6">
+        <div className="bg-white shadow rounded-lg p-4 sm:p-6">
           {activeTab === 'dashboard' && (
             <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-gray-900">Przegląd</h2>
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Przegląd</h2>
               
               {/* Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="bg-blue-50 p-6 rounded-lg">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div className="bg-blue-50 p-4 sm:p-6 rounded-lg">
                   <div className="flex items-center">
-                    <UserGroupIcon className="h-8 w-8 text-blue-600" />
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-blue-600">Aktywni klienci</p>
-                      <p className="text-2xl font-bold text-blue-900">{clients.filter(c => c.status === 'aktywny').length}</p>
+                    <UserGroupIcon className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+                    <div className="ml-3 sm:ml-4">
+                      <p className="text-xs sm:text-sm font-medium text-blue-600">Aktywni klienci</p>
+                      <p className="text-lg sm:text-2xl font-bold text-blue-900">{clients.filter(c => c.status === 'aktywny').length}</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-green-50 p-6 rounded-lg">
+                <div className="bg-green-50 p-4 sm:p-6 rounded-lg">
                   <div className="flex items-center">
-                    <BuildingOfficeIcon className="h-8 w-8 text-green-600" />
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-green-600">Nieruchomości</p>
-                      <p className="text-2xl font-bold text-green-900">{properties.length}</p>
+                    <BuildingOfficeIcon className="h-6 w-6 sm:h-8 sm:w-8 text-green-600" />
+                    <div className="ml-3 sm:ml-4">
+                      <p className="text-xs sm:text-sm font-medium text-green-600">Nieruchomości</p>
+                      <p className="text-lg sm:text-2xl font-bold text-green-900">{properties.length}</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-yellow-50 p-6 rounded-lg">
+                <div className="bg-yellow-50 p-4 sm:p-6 rounded-lg">
                   <div className="flex items-center">
-                    <CalendarIcon className="h-8 w-8 text-yellow-600" />
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-yellow-600">Spotkania dziś</p>
-                      <p className="text-2xl font-bold text-yellow-900">{meetings.filter(m => m.status === 'zaplanowane').length}</p>
+                    <CalendarIcon className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-600" />
+                    <div className="ml-3 sm:ml-4">
+                      <p className="text-xs sm:text-sm font-medium text-yellow-600">Spotkania dziś</p>
+                      <p className="text-lg sm:text-2xl font-bold text-yellow-900">{meetings.filter(m => m.status === 'zaplanowane').length}</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-purple-50 p-6 rounded-lg">
+                <div className="bg-purple-50 p-4 sm:p-6 rounded-lg">
                   <div className="flex items-center">
-                    <CurrencyDollarIcon className="h-8 w-8 text-purple-600" />
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-purple-600">Sprzedane</p>
-                      <p className="text-2xl font-bold text-purple-900">{properties.filter(p => p.status === 'sprzedane').length}</p>
+                    <CurrencyDollarIcon className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600" />
+                    <div className="ml-3 sm:ml-4">
+                      <p className="text-xs sm:text-sm font-medium text-purple-600">Sprzedane</p>
+                      <p className="text-lg sm:text-2xl font-bold text-purple-900">{properties.filter(p => p.status === 'sprzedane').length}</p>
                     </div>
                   </div>
                 </div>
@@ -251,15 +293,15 @@ export default function AgentPanel() {
               {/* Recent Activity */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Ostatnie spotkania</h3>
+                  <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-4">Ostatnie spotkania</h3>
                   <div className="space-y-3">
                     {meetings.slice(0, 3).map((meeting) => (
                       <div key={meeting.id} className="flex items-center p-3 bg-gray-50 rounded-lg">
                         <div className="flex-shrink-0">
                           <CalendarIcon className="h-5 w-5 text-gray-400" />
                         </div>
-                        <div className="ml-3 flex-1">
-                          <p className="text-sm font-medium text-gray-900">{meeting.clientName}</p>
+                        <div className="ml-3 flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate">{meeting.clientName}</p>
                           <p className="text-sm text-gray-500">{meeting.date} o {meeting.time}</p>
                         </div>
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(meeting.status)}`}>
@@ -271,19 +313,19 @@ export default function AgentPanel() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Najnowsze nieruchomości</h3>
+                  <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-4">Najnowsze nieruchomości</h3>
                   <div className="space-y-3">
                     {properties.slice(0, 3).map((property) => (
                       <div key={property.id} className="flex items-center p-3 bg-gray-50 rounded-lg">
                         <div className="flex-shrink-0">
                           <BuildingOfficeIcon className="h-5 w-5 text-gray-400" />
                         </div>
-                        <div className="ml-3 flex-1">
-                          <p className="text-sm font-medium text-gray-900">{property.title}</p>
-                          <p className="text-sm text-gray-500">{property.location}</p>
+                        <div className="ml-3 flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate">{property.title}</p>
+                          <p className="text-sm text-gray-500 truncate">{property.location}</p>
                         </div>
-                        <div className="text-right">
-                          <p className="text-sm font-medium text-gray-900">{formatPrice(property.price)}</p>
+                        <div className="text-right min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate">{formatPrice(property.price)}</p>
                           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(property.status)}`}>
                             {property.status}
                           </span>
@@ -298,25 +340,63 @@ export default function AgentPanel() {
 
           {activeTab === 'clients' && (
             <div className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold text-gray-900">Klienci</h2>
-                <div className="flex space-x-3">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Klienci</h2>
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
                   <div className="relative">
                     <MagnifyingGlassIcon className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <input
                       type="text"
                       placeholder="Szukaj klientów..."
-                      className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
-                  <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                  <button className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
                     <PlusIcon className="h-4 w-4 mr-2" />
                     Dodaj klienta
                   </button>
                 </div>
               </div>
 
-              <div className="overflow-x-auto">
+              {/* Mobile Cards View */}
+              <div className="sm:hidden space-y-4">
+                {clients.map((client) => (
+                  <div key={client.id} className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-sm font-medium text-gray-900 truncate">{client.name}</h3>
+                        <div className="mt-1 space-y-1">
+                          <div className="flex items-center text-sm text-gray-500">
+                            <EnvelopeIcon className="h-4 w-4 mr-2 flex-shrink-0" />
+                            <span className="truncate">{client.email}</span>
+                          </div>
+                          <div className="flex items-center text-sm text-gray-500">
+                            <PhoneIcon className="h-4 w-4 mr-2 flex-shrink-0" />
+                            <span>{client.phone}</span>
+                          </div>
+                          <div className="flex items-center text-sm text-gray-500">
+                            <CalendarIcon className="h-4 w-4 mr-2 flex-shrink-0" />
+                            <span>Ostatni kontakt: {client.lastContact}</span>
+                          </div>
+                        </div>
+                        <p className="mt-2 text-sm text-gray-600 line-clamp-2">{client.notes}</p>
+                      </div>
+                      <div className="ml-4 flex flex-col items-end space-y-2">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(client.status)}`}>
+                          {client.status}
+                        </span>
+                        <div className="flex space-x-2">
+                          <button className="text-blue-600 hover:text-blue-900 text-sm">Edytuj</button>
+                          <button className="text-red-600 hover:text-red-900 text-sm">Usuń</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop Table View */}
+              <div className="hidden sm:block overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
@@ -362,44 +442,44 @@ export default function AgentPanel() {
 
           {activeTab === 'properties' && (
             <div className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold text-gray-900">Nieruchomości</h2>
-                <div className="flex space-x-3">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Nieruchomości</h2>
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
                   <div className="relative">
                     <MagnifyingGlassIcon className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <input
                       type="text"
                       placeholder="Szukaj nieruchomości..."
-                      className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
-                  <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                  <button className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
                     <PlusIcon className="h-4 w-4 mr-2" />
                     Dodaj nieruchomość
                   </button>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {properties.map((property) => (
                   <div key={property.id} className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                    <div className="h-48 bg-gray-200 flex items-center justify-center">
-                      <BuildingOfficeIcon className="h-12 w-12 text-gray-400" />
+                    <div className="h-32 sm:h-48 bg-gray-200 flex items-center justify-center">
+                      <BuildingOfficeIcon className="h-8 w-8 sm:h-12 sm:w-12 text-gray-400" />
                     </div>
-                    <div className="p-4">
-                      <h3 className="text-lg font-medium text-gray-900 mb-2">{property.title}</h3>
+                    <div className="p-3 sm:p-4">
+                      <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2 line-clamp-2">{property.title}</h3>
                       <div className="space-y-2 text-sm text-gray-600">
                         <div className="flex items-center">
-                          <MapPinIcon className="h-4 w-4 mr-2" />
-                          {property.location}
+                          <MapPinIcon className="h-4 w-4 mr-2 flex-shrink-0" />
+                          <span className="truncate">{property.location}</span>
                         </div>
                         <div className="flex items-center">
-                          <CurrencyDollarIcon className="h-4 w-4 mr-2" />
-                          {formatPrice(property.price)}
+                          <CurrencyDollarIcon className="h-4 w-4 mr-2 flex-shrink-0" />
+                          <span className="truncate">{formatPrice(property.price)}</span>
                         </div>
                         <div className="flex items-center">
-                          <BuildingOfficeIcon className="h-4 w-4 mr-2" />
-                          {property.area}m² • {property.rooms} pokoi
+                          <BuildingOfficeIcon className="h-4 w-4 mr-2 flex-shrink-0" />
+                          <span>{property.area}m² • {property.rooms} pokoi</span>
                         </div>
                       </div>
                       <div className="mt-4 flex items-center justify-between">
@@ -420,9 +500,9 @@ export default function AgentPanel() {
 
           {activeTab === 'meetings' && (
             <div className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold text-gray-900">Spotkania</h2>
-                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Spotkania</h2>
+                <button className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
                   <PlusIcon className="h-4 w-4 mr-2" />
                   Dodaj spotkanie
                 </button>
@@ -431,18 +511,20 @@ export default function AgentPanel() {
               <div className="space-y-4">
                 {meetings.map((meeting) => (
                   <div key={meeting.id} className="bg-white border border-gray-200 rounded-lg p-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                      <div className="flex items-start sm:items-center space-x-4">
                         <div className="flex-shrink-0">
-                          <CalendarIcon className="h-8 w-8 text-blue-600" />
+                          <CalendarIcon className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
                         </div>
-                        <div>
-                          <h3 className="text-lg font-medium text-gray-900">{meeting.clientName}</h3>
-                          <p className="text-sm text-gray-500">{meeting.date} o {meeting.time}</p>
-                          <p className="text-sm text-gray-500 capitalize">{meeting.type}</p>
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-base sm:text-lg font-medium text-gray-900">{meeting.clientName}</h3>
+                          <div className="mt-1 sm:mt-0 space-y-1 sm:space-y-0 sm:space-x-4 sm:flex sm:items-center">
+                            <p className="text-sm text-gray-500">{meeting.date} o {meeting.time}</p>
+                            <p className="text-sm text-gray-500 capitalize">{meeting.type}</p>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(meeting.status)}`}>
                           {meeting.status}
                         </span>
@@ -460,21 +542,21 @@ export default function AgentPanel() {
 
           {activeTab === 'documents' && (
             <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-gray-900">Dokumenty</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="bg-blue-50 p-6 rounded-lg border-2 border-dashed border-blue-200">
-                  <DocumentTextIcon className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-blue-900 text-center mb-2">Umowy kupna-sprzedaży</h3>
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Dokumenty</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <div className="bg-blue-50 p-4 sm:p-6 rounded-lg border-2 border-dashed border-blue-200">
+                  <DocumentTextIcon className="h-8 w-8 sm:h-12 sm:w-12 text-blue-600 mx-auto mb-3 sm:mb-4" />
+                  <h3 className="text-base sm:text-lg font-medium text-blue-900 text-center mb-2">Umowy kupna-sprzedaży</h3>
                   <p className="text-blue-700 text-center text-sm">Zarządzaj umowami i dokumentami transakcyjnymi</p>
                 </div>
-                <div className="bg-green-50 p-6 rounded-lg border-2 border-dashed border-green-200">
-                  <DocumentTextIcon className="h-12 w-12 text-green-600 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-green-900 text-center mb-2">Dokumenty klientów</h3>
+                <div className="bg-green-50 p-4 sm:p-6 rounded-lg border-2 border-dashed border-green-200">
+                  <DocumentTextIcon className="h-8 w-8 sm:h-12 sm:w-12 text-green-600 mx-auto mb-3 sm:mb-4" />
+                  <h3 className="text-base sm:text-lg font-medium text-green-900 text-center mb-2">Dokumenty klientów</h3>
                   <p className="text-green-700 text-center text-sm">Przechowuj dokumenty i dane klientów</p>
                 </div>
-                <div className="bg-purple-50 p-6 rounded-lg border-2 border-dashed border-purple-200">
-                  <DocumentTextIcon className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-purple-900 text-center mb-2">Szablony</h3>
+                <div className="bg-purple-50 p-4 sm:p-6 rounded-lg border-2 border-dashed border-purple-200">
+                  <DocumentTextIcon className="h-8 w-8 sm:h-12 sm:w-12 text-purple-600 mx-auto mb-3 sm:mb-4" />
+                  <h3 className="text-base sm:text-lg font-medium text-purple-900 text-center mb-2">Szablony</h3>
                   <p className="text-purple-700 text-center text-sm">Gotowe szablony dokumentów</p>
                 </div>
               </div>
@@ -483,38 +565,38 @@ export default function AgentPanel() {
 
           {activeTab === 'analytics' && (
             <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-gray-900">Analizy i raporty</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white border border-gray-200 rounded-lg p-6">
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Sprzedaże w tym miesiącu</h3>
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Analizy i raporty</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6">
+                  <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-4">Sprzedaże w tym miesiącu</h3>
                   <div className="space-y-3">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Liczba transakcji</span>
+                      <span className="text-sm sm:text-base text-gray-600">Liczba transakcji</span>
                       <span className="font-medium">12</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Wartość sprzedaży</span>
+                      <span className="text-sm sm:text-base text-gray-600">Wartość sprzedaży</span>
                       <span className="font-medium">2,450,000 PLN</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Średnia cena</span>
+                      <span className="text-sm sm:text-base text-gray-600">Średnia cena</span>
                       <span className="font-medium">204,167 PLN</span>
                     </div>
                   </div>
                 </div>
-                <div className="bg-white border border-gray-200 rounded-lg p-6">
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Aktywność klientów</h3>
+                <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6">
+                  <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-4">Aktywność klientów</h3>
                   <div className="space-y-3">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Nowi klienci</span>
+                      <span className="text-sm sm:text-base text-gray-600">Nowi klienci</span>
                       <span className="font-medium">8</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Aktywni klienci</span>
+                      <span className="text-sm sm:text-base text-gray-600">Aktywni klienci</span>
                       <span className="font-medium">24</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Spotkania</span>
+                      <span className="text-sm sm:text-base text-gray-600">Spotkania</span>
                       <span className="font-medium">15</span>
                     </div>
                   </div>
@@ -525,10 +607,10 @@ export default function AgentPanel() {
 
           {activeTab === 'settings' && (
             <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-gray-900">Ustawienia</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white border border-gray-200 rounded-lg p-6">
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Profil</h3>
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Ustawienia</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6">
+                  <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-4">Profil</h3>
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Imię i nazwisko</label>
@@ -544,8 +626,8 @@ export default function AgentPanel() {
                     </div>
                   </div>
                 </div>
-                <div className="bg-white border border-gray-200 rounded-lg p-6">
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Powiadomienia</h3>
+                <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6">
+                  <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-4">Powiadomienia</h3>
                   <div className="space-y-4">
                     <div className="flex items-center">
                       <input type="checkbox" className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
