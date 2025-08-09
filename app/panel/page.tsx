@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { 
   HomeIcon, 
   UserGroupIcon, 
@@ -39,6 +39,7 @@ interface Property {
   status: 'na sprzedaż' | 'sprzedane' | 'zarezerwowane'
   area: number
   rooms: number
+  images: string[]
 }
 
 interface Meeting {
@@ -74,7 +75,7 @@ export default function AgentPanel() {
     }
   ])
 
-  const [properties] = useState<Property[]>([
+  const [properties, setProperties] = useState<Property[]>([
     {
       id: 1,
       title: 'Przestronne mieszkanie 3-pokojowe',
@@ -83,7 +84,11 @@ export default function AgentPanel() {
       location: 'Centrum, Warszawa',
       status: 'na sprzedaż',
       area: 75,
-      rooms: 3
+      rooms: 3,
+      images: [
+        'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+      ]
     },
     {
       id: 2,
@@ -93,7 +98,11 @@ export default function AgentPanel() {
       location: 'Podkowa Leśna',
       status: 'sprzedane',
       area: 150,
-      rooms: 5
+      rooms: 5,
+      images: [
+        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+        'https://images.unsplash.com/photo-1600585154526-990dced4db0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+      ]
     }
   ])
 
@@ -115,6 +124,26 @@ export default function AgentPanel() {
       status: 'zakończone'
     }
   ])
+
+  useEffect(() => {
+    try {
+      const saved = typeof window !== 'undefined' ? localStorage.getItem('properties') : null
+      if (saved) {
+        const parsed: Property[] = JSON.parse(saved)
+        if (Array.isArray(parsed)) {
+          setProperties(parsed)
+        }
+      }
+    } catch (_) {}
+  }, [])
+
+  useEffect(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('properties', JSON.stringify(properties))
+      }
+    } catch (_) {}
+  }, [properties])
 
   const tabs = [
     { id: 'dashboard', name: 'Dashboard', icon: HomeIcon },
@@ -151,6 +180,68 @@ export default function AgentPanel() {
       style: 'currency',
       currency: 'PLN'
     }).format(price)
+  }
+
+  const [isPropertyModalOpen, setIsPropertyModalOpen] = useState(false)
+  const [newProperty, setNewProperty] = useState<Omit<Property, 'id'>>({
+    title: '',
+    type: 'mieszkanie',
+    price: 0,
+    location: '',
+    status: 'na sprzedaż',
+    area: 0,
+    rooms: 1,
+    images: []
+  })
+
+  const handleNewPropertyChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target
+    setNewProperty(prev => ({
+      ...prev,
+      [name]: name === 'price' || name === 'area' || name === 'rooms' ? Number(value) : value
+    }))
+  }
+
+  const readFilesAsDataUrls = (files: FileList): Promise<string[]> => {
+    const fileArray = Array.from(files)
+    return Promise.all(
+      fileArray.map(
+        file =>
+          new Promise<string>((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onload = () => resolve(reader.result as string)
+            reader.onerror = reject
+            reader.readAsDataURL(file)
+          })
+      )
+    )
+  }
+
+  const handleImagesSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || files.length === 0) return
+    const urls = await readFilesAsDataUrls(files)
+    setNewProperty(prev => ({ ...prev, images: urls }))
+  }
+
+  const handleAddProperty = (e: React.FormEvent) => {
+    e.preventDefault()
+    const nextId = properties.length ? Math.max(...properties.map(p => p.id)) + 1 : 1
+    const toAdd: Property = { id: nextId, ...newProperty }
+    setProperties(prev => [toAdd, ...prev])
+    setIsPropertyModalOpen(false)
+    setNewProperty({
+      title: '',
+      type: 'mieszkanie',
+      price: 0,
+      location: '',
+      status: 'na sprzedaż',
+      area: 0,
+      rooms: 1,
+      images: []
+    })
   }
 
   return (
@@ -453,7 +544,7 @@ export default function AgentPanel() {
                       className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
-                  <button className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                  <button onClick={() => setIsPropertyModalOpen(true)} className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
                     <PlusIcon className="h-4 w-4 mr-2" />
                     Dodaj nieruchomość
                   </button>
@@ -463,8 +554,14 @@ export default function AgentPanel() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {properties.map((property) => (
                   <div key={property.id} className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                    <div className="h-32 sm:h-48 bg-gray-200 flex items-center justify-center">
-                      <BuildingOfficeIcon className="h-8 w-8 sm:h-12 sm:w-12 text-gray-400" />
+                    <div className="h-32 sm:h-48 bg-gray-200">
+                      {property.images && property.images.length > 0 ? (
+                        <img src={property.images[0]} alt={property.title} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="h-full w-full flex items-center justify-center">
+                          <BuildingOfficeIcon className="h-8 w-8 sm:h-12 sm:w-12 text-gray-400" />
+                        </div>
+                      )}
                     </div>
                     <div className="p-3 sm:p-4">
                       <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2 line-clamp-2">{property.title}</h3>
@@ -648,6 +745,71 @@ export default function AgentPanel() {
           )}
         </div>
       </div>
+
+      {isPropertyModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-white w-full max-w-2xl rounded-lg shadow-lg p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Nowa nieruchomość</h3>
+              <button onClick={() => setIsPropertyModalOpen(false)} className="text-gray-500 hover:text-gray-700">Zamknij</button>
+            </div>
+            <form onSubmit={handleAddProperty} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700">Tytuł</label>
+                <input name="title" value={newProperty.title} onChange={handleNewPropertyChange} type="text" required className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Typ</label>
+                <select name="type" value={newProperty.type} onChange={handleNewPropertyChange} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                  <option value="mieszkanie">Mieszkanie</option>
+                  <option value="dom">Dom</option>
+                  <option value="działka">Działka</option>
+                  <option value="lokal">Lokal</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Status</label>
+                <select name="status" value={newProperty.status} onChange={handleNewPropertyChange} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                  <option value="na sprzedaż">Na sprzedaż</option>
+                  <option value="sprzedane">Sprzedane</option>
+                  <option value="zarezerwowane">Zarezerwowane</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Cena (PLN)</label>
+                <input name="price" value={newProperty.price} onChange={handleNewPropertyChange} type="number" min="0" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Powierzchnia (m²)</label>
+                <input name="area" value={newProperty.area} onChange={handleNewPropertyChange} type="number" min="0" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Pokoje</label>
+                <input name="rooms" value={newProperty.rooms} onChange={handleNewPropertyChange} type="number" min="1" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700">Lokalizacja</label>
+                <input name="location" value={newProperty.location} onChange={handleNewPropertyChange} type="text" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700">Zdjęcia</label>
+                <input onChange={handleImagesSelected} type="file" accept="image/*" multiple className="mt-1 block w-full text-sm text-gray-600" />
+                {newProperty.images.length > 0 && (
+                  <div className="mt-3 grid grid-cols-3 gap-2">
+                    {newProperty.images.map((img, idx) => (
+                      <img key={idx} src={img} alt={`Podgląd ${idx + 1}`} className="w-full h-24 object-cover rounded" />
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="sm:col-span-2 flex justify-end space-x-3 mt-2">
+                <button type="button" onClick={() => setIsPropertyModalOpen(false)} className="px-4 py-2 rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-50">Anuluj</button>
+                <button type="submit" className="px-4 py-2 rounded-md text-white bg-blue-600 hover:bg-blue-700">Zapisz</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 } 
