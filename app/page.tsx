@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { CalendarDaysIcon, ClockIcon, UserIcon, HomeIcon, PhoneIcon, EnvelopeIcon, HeartIcon, ChartBarIcon, SparklesIcon } from '@heroicons/react/24/outline'
+import { CalendarDaysIcon, ClockIcon, UserIcon, HomeIcon, PhoneIcon, EnvelopeIcon, HeartIcon, ChartBarIcon, SparklesIcon, MapPinIcon, CurrencyDollarIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline'
 import { format } from 'date-fns'
 import ImageCarousel from './components/ImageCarousel'
 import ScrollArrow from './components/ScrollArrow'
@@ -18,6 +18,63 @@ const heroImages = [
   'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
   'https://images.unsplash.com/photo-1600585154526-990dced4db0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
   'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'
+]
+
+interface Property {
+  id: number
+  title: string
+  type: 'mieszkanie' | 'dom' | 'działka' | 'lokal'
+  price: number
+  location: string
+  status: 'na sprzedaż' | 'sprzedane' | 'zarezerwowane'
+  area: number
+  rooms: number
+  images: string[]
+}
+
+const defaultProperties: Property[] = [
+  {
+    id: 1,
+    title: 'Przestronne mieszkanie 3-pokojowe',
+    type: 'mieszkanie',
+    price: 450000,
+    location: 'Centrum, Warszawa',
+    status: 'na sprzedaż',
+    area: 75,
+    rooms: 3,
+    images: [
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+    ]
+  },
+  {
+    id: 2,
+    title: 'Dom z ogrodem 150m²',
+    type: 'dom',
+    price: 850000,
+    location: 'Podkowa Leśna',
+    status: 'na sprzedaż',
+    area: 150,
+    rooms: 5,
+    images: [
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+    ]
+  },
+  {
+    id: 3,
+    title: 'Nowoczesny loft 80m²',
+    type: 'mieszkanie',
+    price: 690000,
+    location: 'Wola, Warszawa',
+    status: 'na sprzedaż',
+    area: 80,
+    rooms: 2,
+    images: [
+      'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+    ]
+  }
 ]
 
 export default function Home() {
@@ -37,12 +94,14 @@ export default function Home() {
   const logicSectionRef = useRef(null)
   const offerSectionRef = useRef(null)
   const formSectionRef = useRef(null)
+  const propertiesSectionRef = useRef(null)
 
   // Sprawdzanie, czy sekcje są widoczne
   const emotionsInView = useInView(emotionsSectionRef, { once: true, amount: 0.3 })
   const logicInView = useInView(logicSectionRef, { once: true, amount: 0.3 })
   const offerInView = useInView(offerSectionRef, { once: true, amount: 0.3 })
   const formInView = useInView(formSectionRef, { once: true, amount: 0.3 })
+  const propertiesInView = useInView(propertiesSectionRef, { once: true, amount: 0.2 })
 
   // Warianty animacji
   const fadeInUp = {
@@ -58,6 +117,29 @@ export default function Home() {
         staggerChildren: 0.2
       }
     }
+  }
+
+  const [properties, setProperties] = useState<Property[]>(defaultProperties)
+
+  useEffect(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('properties')
+        if (saved) {
+          const parsed: Property[] = JSON.parse(saved)
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setProperties(parsed)
+          }
+        }
+      }
+    } catch (_) {}
+  }, [])
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('pl-PL', {
+      style: 'currency',
+      currency: 'PLN'
+    }).format(price)
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -314,7 +396,67 @@ export default function Home() {
         </div>
         
         {/* Animowana strzałka */}
-        <ScrollArrow targetRef={formSectionRef} />
+        <ScrollArrow targetRef={propertiesSectionRef} />
+      </motion.div>
+
+      {/* Properties Section */}
+      <motion.div
+        ref={propertiesSectionRef}
+        className="relative bg-white py-16 sm:py-20 scroll-mt-8"
+        variants={fadeInUp}
+        initial="hidden"
+        animate={propertiesInView ? 'visible' : 'hidden'}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Aktualne oferty</h2>
+
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {properties.map((property) => (
+              <div key={property.id} className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                <div className="h-48 bg-gray-200">
+                  {property.images && property.images.length > 0 ? (
+                    <img src={property.images[0]} alt={property.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="h-full w-full flex items-center justify-center">
+                      <BuildingOfficeIcon className="h-10 w-10 text-gray-400" />
+                    </div>
+                  )}
+                </div>
+                <div className="p-4">
+                  <h3 className="text-lg font-medium text-gray-900 mb-2 line-clamp-2">{property.title}</h3>
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <div className="flex items-center">
+                      <MapPinIcon className="h-4 w-4 mr-2 flex-shrink-0" />
+                      <span className="truncate">{property.location}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <CurrencyDollarIcon className="h-4 w-4 mr-2 flex-shrink-0" />
+                      <span className="truncate">{formatPrice(property.price)}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <BuildingOfficeIcon className="h-4 w-4 mr-2 flex-shrink-0" />
+                      <span>{property.area}m² • {property.rooms} pokoi</span>
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      property.status === 'na sprzedaż'
+                        ? 'bg-green-100 text-green-800'
+                        : property.status === 'zarezerwowane'
+                        ? 'bg-yellow-100 text-yellow-800'
+                        : 'bg-gray-100 text-gray-800'
+                    }`}>
+                      {property.status}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
       </motion.div>
 
       {/* Form Section */}

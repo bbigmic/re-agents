@@ -51,6 +51,51 @@ interface Meeting {
   status: 'zaplanowane' | 'zakończone' | 'odwołane'
 }
 
+const defaultProperties: Property[] = [
+  {
+    id: 1,
+    title: 'Przestronne mieszkanie 3-pokojowe',
+    type: 'mieszkanie',
+    price: 450000,
+    location: 'Centrum, Warszawa',
+    status: 'na sprzedaż',
+    area: 75,
+    rooms: 3,
+    images: [
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+    ]
+  },
+  {
+    id: 2,
+    title: 'Dom z ogrodem 150m²',
+    type: 'dom',
+    price: 850000,
+    location: 'Podkowa Leśna',
+    status: 'sprzedane',
+    area: 150,
+    rooms: 5,
+    images: [
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+    ]
+  },
+  {
+    id: 3,
+    title: 'Nowoczesny loft 80m²',
+    type: 'mieszkanie',
+    price: 690000,
+    location: 'Wola, Warszawa',
+    status: 'na sprzedaż',
+    area: 80,
+    rooms: 2,
+    images: [
+      'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+    ]
+  }
+]
+
 export default function AgentPanel() {
   const [activeTab, setActiveTab] = useState('dashboard')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -75,36 +120,7 @@ export default function AgentPanel() {
     }
   ])
 
-  const [properties, setProperties] = useState<Property[]>([
-    {
-      id: 1,
-      title: 'Przestronne mieszkanie 3-pokojowe',
-      type: 'mieszkanie',
-      price: 450000,
-      location: 'Centrum, Warszawa',
-      status: 'na sprzedaż',
-      area: 75,
-      rooms: 3,
-      images: [
-        'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
-      ]
-    },
-    {
-      id: 2,
-      title: 'Dom z ogrodem 150m²',
-      type: 'dom',
-      price: 850000,
-      location: 'Podkowa Leśna',
-      status: 'sprzedane',
-      area: 150,
-      rooms: 5,
-      images: [
-        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1600585154526-990dced4db0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
-      ]
-    }
-  ])
+  const [properties, setProperties] = useState<Property[]>(defaultProperties)
 
   const [meetings] = useState<Meeting[]>([
     {
@@ -131,7 +147,11 @@ export default function AgentPanel() {
       if (saved) {
         const parsed: Property[] = JSON.parse(saved)
         if (Array.isArray(parsed)) {
-          setProperties(parsed)
+          const map = new Map<number, Property>()
+          defaultProperties.forEach(p => map.set(p.id, p))
+          parsed.forEach(p => map.set(p.id, p))
+          const merged = Array.from(map.values()).sort((a, b) => a.id - b.id)
+          setProperties(merged)
         }
       }
     } catch (_) {}
