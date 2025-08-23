@@ -198,7 +198,7 @@ export default function Home() {
             >
               <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96">
                 <img
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  src="/images/83F11ACF-92F1-4AA8-9C22-600DDE224A53.png"
                   alt="Agent nieruchomości"
                   className="rounded-full object-cover w-full h-full shadow-2xl border-4 border-white"
                 />

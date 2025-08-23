@@ -26,7 +26,7 @@ export default function About() {
             <div ref={aboutSectionRef} className="mt-16 flex flex-col lg:flex-row items-center gap-12 scroll-mt-8">
               <div className="lg:w-1/3">
                 <img
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3"
+                  src="/images/83F11ACF-92F1-4AA8-9C22-600DDE224A53.png"
                   alt="Agent nieruchomości"
                   className="rounded-lg shadow-lg w-full"
                 />
